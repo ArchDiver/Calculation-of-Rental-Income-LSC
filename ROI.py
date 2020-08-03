@@ -13,18 +13,18 @@ class ROI():
         # while propName == 'quit':
         #     break
         if propName == '':
-            propName = input("What do you want to call the property? ")
+            propName = input("What do you want to call the property? ").lower()
             # while propName == 'quit':
             #     break             
         else:
             while propName in self.allProperties and propName !='':
                 print(f"You already have a property with that name.")
-                propName = input("What do you want to call the property? ")
+                propName = input("What do you want to call the property? ").lower()
                 # while propName == 'quit':
                 #     break
         self.allProperties[propName] = {}
-        propAddress = input("What is the propterty address? ")
-        self.allProperties[propName]['address'] = propAddress
+        self.allProperties[propName]['address'] = input("What is the propterty address? ").lower()
+    
         print(f"\n{propName} was added to your list of properties.\n")
         return propName
 
@@ -43,17 +43,17 @@ class ROI():
         """
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
         self.allProperties[propName]['askingPrice'] = propAsk = (float(input("What is the asking price? $: ")))
         self.allProperties[propName]['downPayment'] = propDP = (float(input("How much are you going to put as a down payment? $: ")))
-        self.allProperties[propName]['closeCost'] = (float(input("What are the closing costs? $")))
+        self.allProperties[propName]['closeCost'] = (float(input("What are the closing costs? $: ")))
         self.allProperties[propName]['beginMorgage'] = propMorgage = (propAsk - propDP)
-        self.allProperties[propName]['yearlyInterestRate'] = yearInterest = ((float(input("What is your interest rate? Only enter a whole number.")))/100)
+        self.allProperties[propName]['yearlyInterestRate'] = yearInterest = ((float(input("What is your interest rate? Only enter a number but do NOT include the % ")))/100)
         self.allProperties[propName]['monthlyInterestRate'] = monthInterest = (yearInterest/12)        
-        self.allProperties[propName]['totalPayments'] = payments = (float((input("How many years is the loan?")))*12)
+        self.allProperties[propName]['totalPayments'] = payments = (float((input("How many years is the loan? ")))*12)
         self.allProperties[propName]['monthlyMorgage'] = monthlyMorgage = (propMorgage*(((monthInterest* (1 + monthInterest) ** payments)/(((1 + monthInterest) ** payments)-1))))
         print(f"\nThe monthly morgage payments are going to be ${monthlyMorgage}\n")
         return monthlyMorgage
@@ -67,12 +67,12 @@ class ROI():
         """
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
         self.allProperties[propName]['rent'] = float(input("What is the total rent you expect to get on the property? $: "))
-        self.allProperties[propName]['otherIncome'] = float(input("How much will you make on laundry, storage, etc.? $:"))
+        self.allProperties[propName]['otherIncome'] = float(input("How much will you make on laundry, storage, etc.? $: "))
         self.allProperties[propName]['rentalIncome'] = rentalIncome = (self.allProperties[propName]['rent']) + (self.allProperties[propName]['otherIncome'])
         
         print(f"\nThe current income on {propName} is {rentalIncome}\n")
@@ -83,7 +83,7 @@ class ROI():
     def expenses(self, propName=''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
@@ -111,7 +111,7 @@ class ROI():
         self.allProperties[propName]['repair'] = repair  = float(input("What is the monthly repair cost? $"))
         self.allProperties[propName]['capitalExpenses'] = capEx  = float(input("What is the monthly amount set aside for capital expenses? e.g. a new roof every ten years $"))
         self.allProperties[propName]['managment'] = managment  = float(input("What is the monthly managment cost? $"))
-        if 'monthlyMorgage' in self.allProperties[propName].values():
+        if 'monthlyMorgage' in self.allProperties[propName].keys():
             morgage = self.allProperties[propName]['monthlyMorgage']
         else:
             print("\nYou need to run the morgage calculator to estimate expenses. You will be sent fill that out, then returned here.\n")
@@ -125,16 +125,16 @@ class ROI():
     def cashFlow(self, propName='', income='', totalExpenses=''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
 
-        while 'rentalIncome' not in self.allProperties[propName].values():
+        while 'rentalIncome' not in self.allProperties[propName].keys():
             income = self.income(propName)
             break
         income = self.allProperties[propName]['rentalIncome']
-        while 'totalExpenses' not in self.allProperties[propName].values():
+        while 'totalExpenses' not in self.allProperties[propName].keys():
             totalExpenses = self.expenses(propName)
             break
         totalExpenses = self.allProperties[propName]['totalExpenses']
@@ -148,14 +148,14 @@ class ROI():
     def totalInvestment(self, propName =''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
-        while 'downPayment' not in self.allProperties[propName].values():
+        while 'downPayment' not in self.allProperties[propName].keys():
             self.morgage(propName)
             break
-        while 'closeCost' not in self.allProperties[propName].values():
+        while 'closeCost' not in self.allProperties[propName].keys():
             self.morgage(propName)
             break
         self.allProperties[propName]['initialRepairs'] = initRepair = (float(input("What are going to be the initial repair costs? $")))
@@ -169,16 +169,16 @@ class ROI():
     def findROI(self, propName=''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
-        while 'annualCashFlow' not in self.allProperties[propName].values():
+        while 'annualCashFlow' not in self.allProperties[propName].keys():
             self.cashFlow(propName)
             break
-        while 'total_Initial_Investment' not in self.allProperties[propName].values():
+        while 'total_Initial_Investment' not in self.allProperties[propName].keys():
             self.totalInvestment(propName)
-        self.allProperties[propName]['ROI'] = roi = ((self.allProperties[propName]['annualCashFlow'])/(self.allProperties[propName]['total_Initial_Investment']))
+        self.allProperties[propName]['ROI'] = roi = ((self.allProperties[propName]['annualCashFlow'])/(self.allProperties[propName]['total_Initial_Investment']))*100
         print(f"\nThe cash on cash ROI on {propName} is {roi}\n")
         return roi
     
@@ -188,19 +188,19 @@ class ROI():
     def fastFacts(self, propName =''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("\nWhat is the name of the property? ")
+                propName = input("\nWhat is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
-        propType = input("For 'personal' or 'income'?" ).lower()
+        propType = input("For 'personal' or 'income'? " ).lower()
         if propType == 'personal':
-            while 'monthlyMorgage' not in self.allProperties[propName].values():
+            while 'monthlyMorgage' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break
-            while 'totalExpenses' not in self.allProperties[propName].values():
+            while 'totalExpenses' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break 
-            while 'total_Initial_Investment'  not in self.allProperties[propName].values():
+            while 'total_Initial_Investment'  not in self.allProperties[propName].keys():
                 self.totalInvestment(propName)
                 break
             print(propName)
@@ -209,22 +209,22 @@ class ROI():
             print("Total Inital investment: ", self.allProperties[propName]['total_Initial_Investment'])
             print("\n\n")
         if propType == 'income':
-            while 'monthlyMorgage' not in self.allProperties[propName].values():
+            while 'monthlyMorgage' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break
-            while 'rentalIncome' not in self.allProperties[propName].values():
+            while 'rentalIncome' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break
-            while 'totalExpenses' not in self.allProperties[propName].values():
+            while 'totalExpenses' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break
-            while 'annualCashFlow' not in self.allProperties[propName].values():
+            while 'annualCashFlow' not in self.allProperties[propName].keys():
                 self.cashFlow(propName)
                 break
-            while 'total_Initial_Investment' not in self.allProperties[propName].values():
+            while 'total_Initial_Investment' not in self.allProperties[propName].keys():
                 self.totalInvestment(propName)
                 break
-            while 'ROI' not in self.allProperties[propName].values():
+            while 'ROI' not in self.allProperties[propName].keys():
                 self.findROI(propName)
                 break
             print(propName)
@@ -241,19 +241,21 @@ class ROI():
     def fullFacts(self, propName=''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("What is the name of the property? ")
+                propName = input("What is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. Please add it. Then you will be returned here.")
                 propName = self.addProperty()
-        print(sorted(self.allProperties[propName]))
-        print("\n\n")
+        print(f"\nInformation on {propName}:")
+        for k, v in self.allProperties[propName].items():
+            print(k,": ", v)
+        print("\n")
 
 
 
     def remove(self, propName=''):
         while propName =='' or propName not in self.allProperties:
             if propName == '':
-                propName = input("What is the name of the property? ")
+                propName = input("What is the name of the property? ").lower()
             else:
                 print(f"{propName} is not currently in the list. So you don't have to remove it.")
                 break
@@ -268,11 +270,6 @@ class ROI():
             else:
                 print("Please choose y or n.")
                 continue
-
-            
-                
-        
-                
 
 
 
@@ -307,7 +304,7 @@ def roiCash():
             prop.fullFacts()
             continue      
         if action == 10:
-            quit = input("Are you sure you want to clear the screen? No data will be lost. (y/n)").lower()
+            quit = input("Are you sure you want to clear the screen? No data will be lost. (y/n): ").lower()
             if quit == 'n':
                 continue
             if quit =='y':
@@ -317,7 +314,7 @@ def roiCash():
                 print("That was not acceptable. Sending you to the main menu.")
                 continue                         
         if action == 11:
-            quit = input("Are you sure you want to quit? All data will be lost. (y/n)").lower()
+            quit = input("Are you sure you want to quit? All data will be lost. (y/n): ").lower()
             if quit == 'n':
                 continue
             if quit =='y':
