@@ -277,7 +277,7 @@ def roiCash():
     prop = ROI({},{})
     clear()
     while True:
-        action = int(input("\n\nWhat do you want to do with the propterty?: \n1)Add property \n2)Find morgage rate \n3)Find income \n4)Add expenses \n5)Cash flow \n6)Investment cost \n7)Find ROI \n8)Fast Facts \n9)Full Facts \n10)Clear \n11)Quit \nType the number from list above: "))
+        action = int(input("\n\nWhat do you want to do with the propterty?: \n1)Add property \n2)Find morgage rate \n3)Find income \n4)Add expenses \n5)Cash flow \n6)Investment cost \n7)Find ROI \n8)Fast Facts \n9)Full Facts \n10)Remove a property \n11)Clear the display \n12)Quit \nType the number from list above: "))
         if action == 1:
             prop.addProperty()
             continue
@@ -304,6 +304,9 @@ def roiCash():
             prop.fullFacts()
             continue      
         if action == 10:
+            prop.remove()
+            continue
+        if action == 11:
             quit = input("Are you sure you want to clear the screen? No data will be lost. (y/n): ").lower()
             if quit == 'n':
                 continue
@@ -313,7 +316,8 @@ def roiCash():
             else:
                 print("That was not acceptable. Sending you to the main menu.")
                 continue                         
-        if action == 11:
+        
+        if action == 12:
             quit = input("Are you sure you want to quit? All data will be lost. (y/n): ").lower()
             if quit == 'n':
                 continue
